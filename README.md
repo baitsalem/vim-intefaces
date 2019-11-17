@@ -4,7 +4,7 @@
 
 ### [Pathogen](https://github.com/tpope/vim-pathogen)
 
-Install to ~/.vim/autoload/pathogen.vim. Or copy and paste the following into your terminal/shell:
+Install Pathogen to ~/.vim/autoload/pathogen.vim. Or copy and paste the following into your terminal/shell:
 
 ```bash
 mkdir -p ~/.vim/autoload ~/.vim/bundle && \
