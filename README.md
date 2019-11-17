@@ -17,7 +17,8 @@ Add the following line in your `.vimrc` file
 
 ```bash
 execute pathogen#infect()
-
+syntax on
+filetype plugin indent on
 ```
 
 ### vim-interface installation
