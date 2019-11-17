@@ -13,7 +13,7 @@ curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
 ### Your .vimrc
 
-Add the following line in your .vimrc file
+Add the following line in your `.vimrc` file
 
 ```bash
 execute pathogen#infect()
