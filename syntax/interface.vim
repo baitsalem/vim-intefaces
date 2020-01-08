@@ -58,32 +58,32 @@ exe 'syntax match netmask_line /' .  '\v^\s*(netmask)\s+' . netmask1  . '\s*$' .
 exe 'syntax match netmask_line /' .  '\v^\s*(netmask)\s+' . netmask2  . '\s*$' . '/ contains=interfaceNetmask' 
 
 
-
-
 "link to colors
 
-hi link interfaceComment Comment
-hi link interfaceMode keyword
-hi link interfaceNetmask String
-hi link interfaceIP ip_color
-hi link interfaceNames Special
-hi link interfaceOptions interface_options_color
 
-hi link autoLine ip_color
-hi link interfaceSetLine set_interface_line_color
-hi link address_line address_line_color
-hi link netmask_line netmask_line_color
-hi link interfaceKeyword interface_keyword_color
-
-"define new colors
-highlight ip_color ctermfg=10  guifg=#808080
-highlight set_interface_line_color ctermfg=12  guifg=#808080
-highlight address_line_color ctermfg=14  guifg=#808080
-highlight netmask_line_color ctermfg=14  guifg=#808080
-highlight interface_options_color ctermfg=17  guifg=#808080
-highlight interface_keyword_color ctermfg=19  guifg=#808080
+hi link interfaceComment cblue
+hi link interfaceMode ccyan
+hi link interfaceNetmask cmagenta
+hi link interfaceIP cmagenta
+hi link interfaceNames cred
+hi link interfaceOptions cgreen
 
 
+hi link autoLine cwhite
+hi link interfaceSetLine cwhite
+hi link address_line cwhite
+hi link netmask_line cwhite
+hi link interfaceKeyword cgreen
+
+
+"define colors
+highlight cred ctermfg=Red
+highlight cblue ctermfg=Blue
+highlight ccyan ctermfg=Cyan
+highlight cmagenta ctermfg=Magenta
+highlight cgreen ctermfg=Green
+highlight cwhite ctermfg=White
+highlight cyellow ctermfg=Yellow
 
 
 let b:current_syntax = "interface"
