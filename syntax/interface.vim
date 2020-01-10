@@ -7,7 +7,6 @@ syntax keyword interfaceOptions leasehours leasetime vendor client bootfile serv
 syntax keyword interfaceKeyword mapping script up down pre-up post-down map  
 
 syntax keyword sourceKeyword source contained
-syntax keyword wirelessKeyword  wireless-essid wireless-channel wireless-mode contained
 
 "setting shared variables
 
@@ -66,10 +65,17 @@ exe 'syntax match netmask_line /' .  '\v^\s*(netmask)\s+' . netmask1  . '\s*$' .
 exe 'syntax match netmask_line /' .  '\v^\s*(netmask)\s+' . netmask2  . '\s*$' . '/ contains=interfaceNetmask' 
 
 " wireless settings
+let mode = '(ad-hoc|managed)'
+let wkey = '(off|on)'
+let passwd = '(\w|_|\/)+'
 
+syntax match wirelessKeyword  '\v(wpa-psk|wireless-key|wireless-essid|wireless-channel|wireless-mode|wpa-essid)' contained 
 exe 'syntax match wireless_essid /' .  '\v^\s*(wireless-essid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword' 
-exe 'syntax match wireless_channel  /' .  '\v^\s*(wireless-channel)\s+\d{2}\s*$' . '/ contains=wirelessKeyword' 
-exe 'syntax match wireless_mode /' .  '\v^\s*(wireless-mode)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword' 
+exe 'syntax match wireless_channel  /' .  '\v^\s*(wireless-channel)\s+\d{1,2}\s*$' . '/ contains=wirelessKeyword' 
+exe 'syntax match wireless_mode /' .  '\v^\s*(wireless-mode)\s+' . mode  . '\s*$' . '/ contains=wirelessKeyword' 
+exe 'syntax match wpa_essid /' .  '\v^\s*(wpa-essid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword' 
+exe 'syntax match wpa_psk /' .  '\v^\s*(wpa-psk)\s+' . passwd  . '\s*$' . '/ contains=wirelessKeyword' 
+exe 'syntax match wireless_key /' .  '\v^\s*(wireless-key)\s+' . wkey  . '\s*$' . '/ contains=wirelessKeyword' 
 
 
 "link to colors
@@ -87,8 +93,11 @@ hi link sourceKeyword cwhite
 
 hi link source cyellow
 hi link wireless_essid cyellow
-hi link wireless_channel cyellow
-hi link wireless_mode cyellow
+hi link wireless_channel cmagenta
+hi link wireless_mode cwhite
+hi link wireless_key cwhite
+hi link wpa_psk cgrey 
+hi link wpa_essid cyellow
 
 hi link autoLine cwhite
 hi link interfaceSetLine cwhite
