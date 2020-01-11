@@ -2,9 +2,9 @@ if exists("b:current_syntax")
 	finish
 endif
 
-syntax keyword interfaceOptions metric pointopoint media hwaddress mtu hostname 
+syntax keyword interfaceOptions metric pointopoint media hwaddress ether mtu hostname 
 syntax keyword interfaceOptions leasehours leasetime vendor client bootfile server hwaddr provider frame netnum endpoint local ttl network
-syntax keyword interfaceKeyword mapping script up down pre-up post-down map  
+syntax keyword interfaceKeyword mapping script  down post-down map  
 
 syntax keyword sourceKeyword source contained
 
@@ -16,9 +16,13 @@ let essid = '(("[[:alnum:] \._-]+")|[[:alnum:] \._-]+)'
 let inetName1 = '(en|wl)[ospx][0-9a-z]+'
 let inetName2 = '(wlan|eth|vlan|br|bond|tap|tun|virbr|vrrp)\d+'
 let inetName3= 'lo'
-let ip = '((([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?) | (([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?\/\d{2}))'
+let ip = '(([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?) | (([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?\/\d{2})'
+"let ip = '([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?'
+
 let netmask1 = '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
 let netmask2 = '\d{3}'
+
+let mac  = '([0-9A-F]{2}:){5}[0-9A-F]{2}' 
 
 "source path
 syntax match source '\v^\s*source\s+(\w|_|\/)+\s*$' contains=sourceKeyword 
@@ -38,6 +42,10 @@ exe 'syntax match interfaceNetmask /\v' . netmask2 . '/ contained'
 "ipv4
 exe 'syntax match interfaceIp /\v' . ip .  '/ contained'
 
+"mac
+
+exe 'syntax match macSyntax /\v' . mac .  '/ '
+
 " Interface Names
 exe 'syntax match interfaceNames /\v' . inetName1 .'/ contained'
 exe 'syntax match interfaceNames /\v' . inetName2 .'/ contained'
@@ -54,6 +62,12 @@ exe 'syntax match autoLine /' . '\v^\s*(auto|allow-hotplug)\s+(' . inetName3 . '
 exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName1  . '\s+inet\s+(static|dhcp|loopback)\s*$' .  '/ contains=interfaceMode,interfaceNames'
 exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName2  . '\s+inet\s+(static|dhcp|loopback)\s*$' .  '/ contains=interfaceMode,interfaceNames'
 exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName3  . '\s+inet\s+(static|dhcp|loopback)\s*$' .  '/ contains=interfaceMode,interfaceNames'
+
+
+
+let afterkey = '(systemctl|ifconfig|ip|route|add|del|-net|-host|default|gw|via|dev|modprobe|rule|from|table|\s)'
+exe 'syntax match afterKey /\v' . afterkey .'/ contained'
+exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up)\s+(' . afterkey . '|'  . ip . ')+' . '\s+$' .  '/ contains=interfaceIp,afterKey'
 
 
 " set address of host and gateway
@@ -79,17 +93,21 @@ exe 'syntax match wireless_key /' .  '\v^\s*(wireless-key)\s+' . passwd  . '\s*$
 exe 'syntax match wireless_key_off /' .  '\v^\s*(wireless-key)\s+' . wkey  . '\s*$' . '/ contains=wirelessKeyword' 
 
 
-"link to colors
 
+
+
+"link to colors
 
 hi link interfaceComment cblue
 hi link interfaceMode ccyan
 hi link interfaceNetmask cmagenta
 hi link interfaceIP cmagenta
+hi link macSyntax cmagenta
 hi link interfaceNames cred
 hi link interfaceOptions cwhite
 hi link wirelessKeyword cwhite
 hi link sourceKeyword cwhite
+hi link afterKey cgreen
 
 
 hi link source cyellow
@@ -106,6 +124,7 @@ hi link interfaceSetLine cwhite
 hi link address_line cwhite
 hi link netmask_line cwhite
 hi link interfaceKeyword cgreen
+hi link upSyntax cwhite
 
 
 "define colors
