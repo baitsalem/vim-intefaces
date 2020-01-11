@@ -16,11 +16,11 @@ let essid = '(("[[:alnum:] \._-]+")|[[:alnum:] \._-]+)'
 let inetName1 = '(en|wl)[ospx][0-9a-z]+'
 let inetName2 = '(wlan|eth|vlan|br|bond|tap|tun|virbr|vrrp)\d+'
 let inetName3= 'lo'
-let ip = '(([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?) | (([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?\/\d{2})'
-"let ip = '([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?'
+"let ip = '(([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?) | (([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?\/\d{2})'
+let ip = '([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,2})?'
 
 let netmask1 = '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
-let netmask2 = '\d{3}'
+let netmask2 = '\d{2}'
 
 let mac  = '([0-9A-F]{2}:){5}[0-9A-F]{2}' 
 
@@ -83,11 +83,11 @@ let mode = '(ad-hoc|managed)'
 let wkey = '(off|on)'
 let passwd = '\p+'
 
-syntax match wirelessKeyword  '\v(wpa-psk|wireless-key|wireless-essid|wireless-channel|wireless-mode|wpa-essid)' contained 
+syntax match wirelessKeyword  '\v(wpa-psk|wireless-key|wireless-essid|wireless-channel|wireless-mode|wpa-ssid)' contained 
 exe 'syntax match wireless_essid /' .  '\v^\s*(wireless-essid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword' 
 exe 'syntax match wireless_channel  /' .  '\v^\s*(wireless-channel)\s+\d{1,2}\s*$' . '/ contains=wirelessKeyword' 
 exe 'syntax match wireless_mode /' .  '\v^\s*(wireless-mode)\s+' . mode  . '\s*$' . '/ contains=wirelessKeyword' 
-exe 'syntax match wpa_essid /' .  '\v^\s*(wpa-essid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword' 
+exe 'syntax match wpa_essid /' .  '\v^\s*(wpa-ssid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword' 
 exe 'syntax match wpa_psk /' .  '\v^\s*(wpa-psk)\s+' . passwd  . '\s*$' . '/ contains=wirelessKeyword' 
 exe 'syntax match wireless_key /' .  '\v^\s*(wireless-key)\s+' . passwd  . '\s*$' . '/ contains=wirelessKeyword' 
 exe 'syntax match wireless_key_off /' .  '\v^\s*(wireless-key)\s+' . wkey  . '\s*$' . '/ contains=wirelessKeyword' 
@@ -115,9 +115,9 @@ hi link wireless_essid cyellow
 hi link wireless_channel cmagenta
 hi link wireless_mode cwhite
 hi link wireless_key_off cwhite
-hi link wpa_psk cgrey 
+hi link wireless_key cgray
+hi link wpa_psk cgray 
 hi link wpa_essid cyellow
-hi link wireless_key cgrey
 
 hi link autoLine cwhite
 hi link interfaceSetLine cwhite
@@ -135,6 +135,7 @@ highlight cmagenta ctermfg=Magenta
 highlight cgreen ctermfg=Green
 highlight cwhite ctermfg=White
 highlight cyellow ctermfg=Yellow
+highlight cgray ctermfg=DarkGray
 
 
 let b:current_syntax = "interface"
