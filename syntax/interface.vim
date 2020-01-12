@@ -13,8 +13,8 @@ syntax keyword sourceKeyword source contained
 
 let essid = '(("[[:alnum:] \._-]+")|[[:alnum:] \._-]+)'
 
-let inetName1 = '(en|wl)[ospx][0-9a-z]+'
-let inetName2 = '(wlan|eth|vlan|br|bond|tap|tun|virbr|vrrp)\d+'
+let inetName1 = '((en|wl)[ospx][0-9a-z]+)'
+let inetName2 = '((wlan|eth|vlan|br|bond|tap|tun|virbr|vrrp)\d+)'
 let inetName3= 'lo'
 "let ip = '(([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?) | (([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?\/\d{2})'
 let ip = '([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,2})?'
@@ -53,21 +53,19 @@ exe 'syntax match interfaceNames /\v' . inetName3 .'/ contained'
 
 
 "auto line
-exe 'syntax match autoLine /' . '\v^\s*(auto|allow-hotplug)\s+(' . inetName1 . ')\s*$/ contains=interfaceNames'
-exe 'syntax match autoLine /' . '\v^\s*(auto|allow-hotplug)\s+(' . inetName2 . ')\s*$/ contains=interfaceNames'
-exe 'syntax match autoLine /' . '\v^\s*(auto|allow-hotplug)\s+(' . inetName3 . ')\s*$/ contains=interfaceNames'
+exe 'syntax match autoLine /' . '\v^\s*(auto|allow-hotplug)\s+(' . inetName1 . '(:\d{1,3})*\s+|' . inetName2 . '(:\d{1,3})*\s+|' . inetName3 .  '\s+)+\s*$/ contains=interfaceNames'
 
 
 " Interface settings
-exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName1  . '\s+inet\s+(static|dhcp|loopback)\s*$' .  '/ contains=interfaceMode,interfaceNames'
-exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName2  . '\s+inet\s+(static|dhcp|loopback)\s*$' .  '/ contains=interfaceMode,interfaceNames'
+exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName1  . '\s+inet\s+(static|dhcp|loopback|manual)\s*$' .  '/ contains=interfaceMode,interfaceNames'
+exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName2  . '\s+inet\s+(static|dhcp|loopback|manual)\s*$' .  '/ contains=interfaceMode,interfaceNames'
 exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName3  . '\s+inet\s+(static|dhcp|loopback)\s*$' .  '/ contains=interfaceMode,interfaceNames'
 
 
 
-let afterkey = '(systemctl|ifconfig|ip|route|add|del|-net|-host|default|gw|via|dev|modprobe|rule|from|table|\s)'
+let afterkey = '(systemctl|ifconfig|ip|route|add|del|-net|-host|default|netmask|gw|via|dev|modprobe|rule|from|table|\s)'
 exe 'syntax match afterKey /\v' . afterkey .'/ contained'
-exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up)\s+(' . afterkey . '|'  . ip . ')+' . '\s+$' .  '/ contains=interfaceIp,afterKey'
+exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up|down)\s+(' . afterkey . '|'  . ip . ')+' . '\s*$' .  '/ contains=interfaceIp,afterKey'
 
 
 " set address of host and gateway
