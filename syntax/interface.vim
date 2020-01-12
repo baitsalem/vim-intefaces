@@ -25,7 +25,7 @@ let netmask2 = '\d{2}'
 let mac  = '([0-9A-F]{2}:){5}[0-9A-F]{2}' 
 
 "source path
-syntax match source '\v^\s*source\s+(\w|_|\/)+\s*$' contains=sourceKeyword 
+syntax match source '\v^\s*source\s+\p+\s*$' contains=sourceKeyword 
 
 "Comment
 syn keyword	todo		TODO XXX contained 
