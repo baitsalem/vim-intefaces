@@ -1,6 +1,6 @@
 # ***vim-interfaces***
 
-## Installation
+## Local Installation with Pathogen
 
 ### [Pathogen](https://github.com/tpope/vim-pathogen)
 
@@ -24,3 +24,10 @@ filetype plugin indent on
 ### vim-interface installation
 
 - Clone the repository from `/.vim/bundle` directory
+
+
+## Global installation 
+
+You must copy the content of  `ftdetect`, `ftplugin` and `syntax` directories to their equivalent in `/usr/share/vim/vim81` directory.
+
+

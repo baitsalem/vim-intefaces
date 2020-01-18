@@ -13,8 +13,8 @@ syntax keyword sourceKeyword source contained
 
 let essid = '(("[[:alnum:] \._-]+")|[[:alnum:] \._-]+)'
 
-let inetName1 = '((en|wl)[ospx][0-9a-z]+)'
-let inetName2 = '((wlan|eth|vlan|br|bond|tap|tun|virbr|vrrp)\d+)'
+let inetName1 = '((en|wl)[ospx][0-9a-z]+)([:.]\d{1,3})*'
+let inetName2 = '((wlan|eth|vlan|br|bond|tap|tun|virbr|vrrp)\d+)([:.]\d{1,3})*'
 let inetName3= 'lo'
 "let ip = '(([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?) | (([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?\/\d{2})'
 let ip = '([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,2})?'
@@ -22,7 +22,7 @@ let ip = '([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,2})?'
 let netmask1 = '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
 let netmask2 = '\d{2}'
 
-let mac  = '([0-9A-F]{2}:){5}[0-9A-F]{2}' 
+let mac  = '([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}' 
 
 "source path
 syntax match source '\v^\s*source\s+\p+\s*$' contains=sourceKeyword 
@@ -50,10 +50,13 @@ exe 'syntax match macSyntax /\v' . mac .  '/ '
 exe 'syntax match interfaceNames /\v' . inetName1 .'/ contained'
 exe 'syntax match interfaceNames /\v' . inetName2 .'/ contained'
 exe 'syntax match interfaceNames /\v' . inetName3 .'/ contained'
+exe 'syntax match interfaceNamesNotLo /\v' . inetName1 .'/ contained'
+exe 'syntax match interfaceNamesNotLo /\v' . inetName2 .'/ contained'
 
 
 "auto line
-exe 'syntax match autoLine /' . '\v^\s*(auto|allow-hotplug)\s+(' . inetName1 . '(:\d{1,3})*\s+|' . inetName2 . '(:\d{1,3})*\s+|' . inetName3 .  '\s+)+\s*$/ contains=interfaceNames'
+exe 'syntax match autoLine /' . '\v^\s*(auto|allow-hotplug)(\s+' . inetName1 . '|\s+' . inetName2 . ')+\s*$/ contains=interfaceNamesNotLo'
+exe 'syntax match autoLine /' . '\v^\s*(auto)(\s+' . inetName1 . '|\s+' . inetName2 . '|\s+' . inetName3 .  ')+\s*$/ contains=interfaceNames'
 
 
 " Interface settings
@@ -102,6 +105,7 @@ hi link interfaceNetmask cmagenta
 hi link interfaceIP cmagenta
 hi link macSyntax cmagenta
 hi link interfaceNames cred
+hi link interfaceNamesNotLo cred
 hi link interfaceOptions cwhite
 hi link wirelessKeyword cwhite
 hi link sourceKeyword cwhite
