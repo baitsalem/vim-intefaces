@@ -13,8 +13,8 @@ syntax keyword sourceKeyword source contained
 
 let essid = '(("[[:alnum:] \._-]+")|[[:alnum:] \._-]+)'
 
-let inetName1 = '((en|wl)[ospx][0-9a-z]+)([:.]\d{1,3})*'
-let inetName2 = '((wlan|eth|vlan|br|bond|tap|tun|virbr|vrrp)\d+)([:.]\d{1,3})*'
+let inetName1 = '((en|wl)[ospx][0-9a-z]+)([:.]\d{1,4})*'
+let inetName2 = '((wlan|eth|vlan|br|bond|tap|tun|virbr|vrrp)\d+)([:.]\d{1,4})*'
 let inetName3= 'lo'
 "let ip = '(([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?) | (([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?\/\d{2})'
 let ip = '([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,2})?'
